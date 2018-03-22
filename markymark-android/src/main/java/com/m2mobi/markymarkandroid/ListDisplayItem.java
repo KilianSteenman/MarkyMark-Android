@@ -12,6 +12,7 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -37,16 +38,14 @@ public class ListDisplayItem implements DisplayItem<View, MarkDownList, Spanned>
 
 	private Context mContext;
 
-	private final int mIndentationSpacingPixels, mIndicatorSpacingPixels;
+	private final int mListMargin;
 
 	@DrawableRes
 	private final int[] mBulletDrawables;
 
-	public ListDisplayItem(final Context pContext, @DimenRes final int pIndentationSpacing,
-			@DimenRes final int pBulletSpacing, @DrawableRes final int[] pBulletDrawables) {
+	public ListDisplayItem(final Context pContext, @DimenRes final int pListMargin, @DrawableRes final int[] pBulletDrawables) {
 		mContext = pContext;
-		mIndicatorSpacingPixels = mContext.getResources().getDimensionPixelSize(pBulletSpacing);
-		mIndentationSpacingPixels = mContext.getResources().getDimensionPixelSize(pIndentationSpacing);
+		mListMargin = mContext.getResources().getDimensionPixelSize(pListMargin);
 		mBulletDrawables = pBulletDrawables;
 	}
 
@@ -73,7 +72,7 @@ public class ListDisplayItem implements DisplayItem<View, MarkDownList, Spanned>
 							LayoutParams.WRAP_CONTENT,
 							LayoutParams.WRAP_CONTENT
 					);
-					params.setMargins(mIndentationSpacingPixels, 0, 0, 0);
+					params.setMargins(mListMargin, 0, 0, 0);
 					nestedLayout.setLayoutParams(params);
 					layout.addView(nestedLayout);
 				}
@@ -94,7 +93,7 @@ public class ListDisplayItem implements DisplayItem<View, MarkDownList, Spanned>
 	 * @return Returns a TextView
 	 */
 	private TextView getTextView(final MarkDownList pMarkDownList, final CharSequence pText, final int pIndex) {
-		final TextView textView = new TextView(mContext, null, R.attr.MarkDownListStyle);
+		final AppCompatTextView textView = new AppCompatTextView(mContext, null, R.attr.MarkDownListStyle);
 		textView.setMovementMethod(LinkMovementMethod.getInstance());
 		if (pMarkDownList.isOrdered()) {
 			textView.setText(String.format(Locale.getDefault(), "%d. %s", pIndex + 1, pText));
@@ -102,9 +101,8 @@ public class ListDisplayItem implements DisplayItem<View, MarkDownList, Spanned>
 			Drawable bullet = mContext.getResources().getDrawable(getDrawable(pMarkDownList.getNestedLevel()));
 			TopCompoundDrawable gravityDrawable = new TopCompoundDrawable(bullet, textView.getLineHeight());
 			bullet.setBounds(0, 0, bullet.getIntrinsicWidth(), bullet.getIntrinsicHeight());
-			gravityDrawable.setBounds(0, 0, bullet.getIntrinsicWidth(), bullet.getIntrinsicHeight());
 			textView.setCompoundDrawables(gravityDrawable, null, null, null);
-			textView.setCompoundDrawablePadding(mIndicatorSpacingPixels);
+			textView.setCompoundDrawablePadding(mListMargin);
 			textView.setText(pText);
 		}
 		return textView;
