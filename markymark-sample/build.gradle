@@ -35,4 +35,5 @@ dependencies {
     api "com.android.support:appcompat-v7:$android_support_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 }

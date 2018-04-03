@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class CodeBlockRule implements Rule {
 
 	/** Pattern used to find the start and end of the code block */
-	private static final Pattern CODE_PATTERN_START = Pattern.compile("^`{3}");
+	private static final Pattern CODE_PATTERN_START = Pattern.compile("^`{3}.*");
 
 	/** Pattern that indicates the code block is a single line */
 	private static final Pattern CODE_PATTERN_END_SINGLE_LINE = Pattern.compile("(?<!^)(\\`{3})$");
